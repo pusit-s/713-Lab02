@@ -1,7 +1,13 @@
-const add = (a:number,b:number):string => {
-    const result =  a+b;
-    return result.toString();
-    } 
+const findMax = (arr: number[]): string => {
+    let max = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+        max = arr[i];
+        }
+    }
+    return max.toString();
+    }
 
-const result = add(1,2);
-console.log(result,'type of result:',typeof result);
+const num_list = [1, 2, 3, 4, 5];
+console.log(findMax(num_list));
+
