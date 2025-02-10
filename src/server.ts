@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 const app = express();
 const port = 3000;
 
+app.use(express.json())
+
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');
 });
@@ -34,6 +36,13 @@ app.get('/events', (req: Request, res: Response) => {
     } else {
         res.json(events);
     }
+});
+
+app.post('/events', (req: Request, res: Response) => {
+    const newEvent: Event = req.body;
+    newEvent.id = events.length + 1;
+    events.push(newEvent);
+    res.json(newEvent);
 });
 
 interface Event {
