@@ -16,6 +16,16 @@ app.get('/test', (req: Request, res: Response) => {
     res.send(output);
 });
 
+app.get('/events/:id', (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const event = events.find((event) => event.id === id);
+    if (event) {
+        res.json(event);
+    } else {
+        res.status(404).send('Event not found');
+    }
+});
+
 app.get('/events', (req: Request, res: Response) => {
     if (req.query.category) {
         const category = req.query.category;
