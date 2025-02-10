@@ -40,9 +40,17 @@ app.get('/events', (req: Request, res: Response) => {
 
 app.post('/events', (req: Request, res: Response) => {
     const newEvent: Event = req.body;
-    newEvent.id = events.length + 1;
-    events.push(newEvent);
-    res.json(newEvent);
+
+    const existingEventIndex = events.findIndex(event => event.id === newEvent.id);
+
+    if (existingEventIndex !== -1) {
+        events[existingEventIndex] = { ...events[existingEventIndex], ...newEvent };
+        res.json({ message: 'Event updated successfully', event: events[existingEventIndex] });
+    } else {
+        newEvent.id = events.length + 1;
+        events.push(newEvent);
+        res.json({ message: 'Event created successfully', event: newEvent });
+    }
 });
 
 interface Event {
