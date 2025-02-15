@@ -1,4 +1,6 @@
 import express, { Request, Response } from 'express';
+import { get } from 'http';
+import add from './function';
 const app = express();
 const port = 3000;
 
@@ -20,7 +22,7 @@ app.get('/test', (req: Request, res: Response) => {
 
 app.get('/events/:id', (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const event = events.find((event) => event.id === id);
+    const event = getEventById(id);
     if (event) {
         res.json(event);
     } else {
@@ -28,30 +30,41 @@ app.get('/events/:id', (req: Request, res: Response) => {
     }
 });
 
+
 app.get('/events', (req: Request, res: Response) => {
     if (req.query.category) {
-        const category = req.query.category;
-        const filteredEvents = events.filter((event) => event.category === category);
+        const category = req.query.category as string;
+        const filteredEvents = getEventByCategory(category as string);
         res.json(filteredEvents);
     } else {
-        res.json(events);
+        res.json(getAllEvents);
     }
 });
 
 app.post('/events', (req: Request, res: Response) => {
     const newEvent: Event = req.body;
-
-    const existingEventIndex = events.findIndex(event => event.id === newEvent.id);
-
-    if (existingEventIndex !== -1) {
-        events[existingEventIndex] = { ...events[existingEventIndex], ...newEvent };
-        res.json({ message: 'Event updated successfully', event: events[existingEventIndex] });
-    } else {
-        newEvent.id = events.length + 1;
-        events.push(newEvent);
-        res.json({ message: 'Event created successfully', event: newEvent });
-    }
+    addEvent(newEvent)
+    res.json(newEvent)
 });
+
+function getEventByCategory(category: string): Event[] {
+    const filteredEvents = events.filter((event) => event.category === category);
+    return filteredEvents
+}
+
+function getAllEvents(): Event[] {
+    return events
+}
+
+function getEventById(id: number): Event | undefined {
+    return events.find((event) => event.id === id);
+}
+
+function addEvent(newEvent: Event): Event {
+    newEvent.id = events.length + 1;
+    events.push(newEvent);
+    return newEvent;
+}
 
 interface Event {
     id: number;
