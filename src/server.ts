@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { addEvent, getAllEvents, getEventByCategory, getEventById } from "./services/EventService";
-import { Event } from './services/EventService';
+import { Event } from "./models/Event";
 
 import add from './function';
 const app = express();
@@ -47,4 +47,3 @@ app.post('/events', async(req: Request, res: Response) => {
     await addEvent(newEvent)
     res.json(newEvent)
 });
-
