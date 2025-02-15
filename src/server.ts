@@ -22,9 +22,19 @@ app.get('/test', (req: Request, res: Response) => {
     res.send(output);
 });
 
-app.get('/events/:id', (req: Request, res: Response) => {
+app.get('/events', async(req: Request, res: Response) => {
+    if (req.query.category) {
+        const category = req.query.category as string;
+        const filteredEvents = await getEventByCategory(category as string);
+        res.json(filteredEvents);
+    } else {
+        res.json(await getAllEvents());
+    }
+});
+
+app.get('/events/:id', async(req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const event = getEventById(id);
+    const event = await getEventById(id);
     if (event) {
         res.json(event);
     } else {
@@ -32,20 +42,9 @@ app.get('/events/:id', (req: Request, res: Response) => {
     }
 });
 
-
-app.get('/events', (req: Request, res: Response) => {
-    if (req.query.category) {
-        const category = req.query.category as string;
-        const filteredEvents = getEventByCategory(category as string);
-        res.json(filteredEvents);
-    } else {
-        res.json(getAllEvents);
-    }
-});
-
-app.post('/events', (req: Request, res: Response) => {
+app.post('/events', async(req: Request, res: Response) => {
     const newEvent: Event = req.body;
-    addEvent(newEvent)
+    await addEvent(newEvent)
     res.json(newEvent)
 });
 
