@@ -3,10 +3,18 @@ import { addEvent, getAllEvents, getEventByCategory, getEventById } from "./serv
 import { Event } from "./models/Event";
 import multer from 'multer';
 import { uploadFile } from './services/UploadFileService';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const port = 3000;
 const upload = multer({storage: multer.memoryStorage()});
+const bucket = process.env.SUPABASE_BUCKET_NAME;
+const filePath = process.env.UPLOAD_DIR;
+
+if (!bucket || !filePath) {
+    throw new Error("Bucket name or file path not provided");
+}
 
 app.use(express.json())
 

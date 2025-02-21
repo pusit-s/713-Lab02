@@ -2,6 +2,7 @@ import s3Client from "../awsConfig";
 import { PutObjectAclCommand } from "@aws-sdk/client-s3";
 import { randomBytes } from "crypto";
 
+
 function generateSaltedFilename(originalFilename: string): string {
     const salt = randomBytes(16).toString("hex");
     const extension = originalFilename.split('.').pop();
@@ -22,7 +23,7 @@ export async function uploadFile(bucket: string, filePath: string, file: Express
     try {
         const data = await s3Client.send(new PutObjectAclCommand(params));
         console.log("Successfully uploaded file", data);
-        const publicUrl = `https://jevhdzsjeoykeblpcyph.supabase.co/storage/v1/object/public/images/${saltedFilePath}`;
+        const publicUrl = `${process.env.SUPABASE_OUTPUT_URL}/${saltedFilePath}`
         console.log("File uploaded at URL: ", publicUrl);
         return publicUrl;
     } catch (error) {
