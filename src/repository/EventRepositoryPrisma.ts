@@ -3,7 +3,7 @@ import type { Event } from "../models/Event";
 
 const prisma = new PrismaClient();
 
-export function getEventByCategory(category: string): Promise<Event[]> {
+export function getEventByCategory(category: string) {
     return prisma.event.findMany({
         where: {
             category: category,
@@ -11,7 +11,7 @@ export function getEventByCategory(category: string): Promise<Event[]> {
     });
 }
 
-export function getEventById(id: number): Promise<Event | null> {
+export function getEventById(id: number) {
     return prisma.event.findUnique({
         where: {
             id: id,
@@ -19,11 +19,11 @@ export function getEventById(id: number): Promise<Event | null> {
     });
 }
 
-export function getAllEvents(): Promise<Event[]> {
+export function getAllEvents() {
     return prisma.event.findMany();
 }
 
-export function addEvent(event: Event): Promise<Event> {
+export function addEvent(event: Event){
     return prisma.event.create({
         data: {
             category: event.category,
@@ -33,7 +33,6 @@ export function addEvent(event: Event): Promise<Event> {
             date: event.date,
             time: event.time,
             petsAllowed: event.petsAllowed,
-            organizer: event.organizer,
         },
     });
 }
