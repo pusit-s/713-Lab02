@@ -1,5 +1,5 @@
 import s3Client from "../awsConfig";
-import { PutObjectAclCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { randomBytes } from "crypto";
 
 
@@ -21,7 +21,7 @@ export async function uploadFile(bucket: string, filePath: string, file: Express
     };
 
     try {
-        const data = await s3Client.send(new PutObjectAclCommand(params));
+        const data = await s3Client.send(new PutObjectCommand(params));
         console.log("Successfully uploaded file", data);
         const publicUrl = `${process.env.SUPABASE_OUTPUT_URL}/${saltedFilePath}`
         console.log("File uploaded at URL: ", publicUrl);
