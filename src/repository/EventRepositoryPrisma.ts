@@ -36,3 +36,22 @@ export function addEvent(event: Event){
         },
     });
 }
+
+export function getAllEventsWithOrganizer() {
+    return prisma.event.findMany({
+        include: {
+            organizer: true,
+        },
+    });
+}
+
+export function getEventByIdWithOrganizer(id: number) {
+    return prisma.event.findUnique({
+        where: {
+            id: id,
+        },
+        include: {
+            organizer: true,
+        },
+    });
+}
