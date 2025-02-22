@@ -1,5 +1,5 @@
 import { Organizer } from "./Organizer";
-
+import { Participant } from "./Participants";
 export interface Event {
     id?: number;
     category?: string;
@@ -11,4 +11,5 @@ export interface Event {
     petsAllowed?: boolean;
     organizerId?: number | null;
     organizer?: Organizer | null;
+    participants?: Participant[];
 }
